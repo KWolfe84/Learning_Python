@@ -23,13 +23,20 @@ else:
     exit()
 
 os.system(nmap_command)
+# Find wordlist for gobuster and export location to shell
+directory_name = 'Web-Content'
+file_name = 'directory-list-2.3-big.txt'
+file_path = os.path.abspath(os.path.join(directory_name, file_name))
+
+subprocess.run(f'export DIRBIG="{file_path}"', shell=True)
+
 
 gobuster_type = input("Which Gobuster scan type would you like? (vhost/dir): \n")
 # Run Gobuster scan
 if gobuster_type == "dir":
-    gobuster_command = f"gobuster dir -u http://{ip_address} -w $DIRMEDIUM -o {ip_address}_dir_gobuster.txt"
+    gobuster_command = f"gobuster dir -u http://{ip_address} -w $DIRBIG -o {ip_address}_dir_gobuster.txt"
 elif gobuster_type == "vhost":
-    gobuster_command = f"gobuster vhost -u http://{ip_address} -w /usr/share/payloads/SecLists/Discovery/Web-Content/SVNDigger/all-dirs.txt -o {ip_address}_vhost_gobuster.txt"
+    gobuster_command = f"gobuster vhost -u http://{ip_address} -w $DIRBIG -o {ip_address}_vhost_gobuster.txt"
 else:
     print("Invalid scan type")
 os.system(gobuster_command)
@@ -37,7 +44,7 @@ os.system(gobuster_command)
 
 # Run dirb scan
 dirb_command = f"dirb http://{ip_address} /usr/share/payloads/SecLists/Discovery/Web-Content/SVNDigger/all-dirs.txt -o {ip_address}_dirb.txt"
-
+os.system(dirb_command)
 # Print output file paths
 print(f"Nmap output saved to {ip_address}_{scan_type}_nmap.txt")
 if gobuster_type == "dir":
