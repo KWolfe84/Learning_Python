@@ -29,7 +29,7 @@ gobuster_type = input("Which Gobuster scan type would you like? (vhost/dir): \n"
 if gobuster_type == "dir":
     gobuster_command = f"gobuster dir -u http://{ip_address} -w $DIRMEDIUM -o {ip_address}_dir_gobuster.txt"
 elif gobuster_type == "vhost":
-    gobuster_command = f"gobuster vhost -u http://{ip_address} -w /usr/share/payloads/SecLists/Discover/Web-Content/SVNDigger/all-dirs.txt -o {ip_address}_vhost_gobuster.txt"
+    gobuster_command = f"gobuster vhost -u http://{ip_address} -w /usr/share/payloads/SecLists/Discovery/Web-Content/SVNDigger/all-dirs.txt -o {ip_address}_vhost_gobuster.txt"
 else:
     print("Invalid scan type")
 os.system(gobuster_command)
