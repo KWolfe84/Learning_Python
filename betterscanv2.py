@@ -1,5 +1,7 @@
 import tkinter as tk
 import subprocess
+import os
+from prettytable import PrettyTable
 
 def scan():
 	ip_address = ip_entry.get()
@@ -17,12 +19,18 @@ def scan():
 	if service_info_var.get():
 		options += "-sV "
 	subprocess.run(f"nmap {options} {ip_address}", shell=True)
+	
+	directory_name = 'Web-Content'
+	file_name = 'directory-list-2.3-medium.txt'
+	file_path = os.path.abspath(os.path.join(directory_name, file_name))
+
+	subprocess.run(f'export DIRMED="{file_path}"', shell=True)
 	if gobuster_var.get():
-		subprocess.run(f"gobuster dir -u http://{ip_address} -w /usr/share/payloads/SecLists/Discover/Web-Content/directory-list-2.3-medium.txt -x php, txt", shell=True)
+		subprocess.run(f"gobuster dir -u http://{ip_address} -w {DIRMED} -x php, txt", shell=True)
 		
 	if dirb_var.get():
 		subprocess.run(f"dirb http://{ip_address}", shell=True)
-
+		
 window = tk.Tk()
 window.title("Over9000")
 
